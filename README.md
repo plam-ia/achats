@@ -1,33 +1,20 @@
-# Mes envies — V1
+# Achats — V1 simplifiée
 
-PWA personnelle pour gérer :
-- idées d'achats
-- modèles trouvés
-- prix vus / prix cibles
-- cadeaux par personne
-- objets à vendre
+Contenu : Accueil / Achats / Cadeaux uniquement.
 
-## 1. Configurer Supabase
-Ouvrir `config.js` et remplacer uniquement :
-- `COLLE_ICI_TON_PROJECT_URL`
-- `COLLE_ICI_TA_PUBLISHABLE_KEY`
+## Avant l'upload
+Dans `config.js`, remets :
+- SUPABASE_URL
+- SUPABASE_PUBLISHABLE_KEY
 
-Ne jamais mettre de `service_role`, `secret key` ou `sb_secret_...` dans ce fichier.
+## Réupload direct sur main
+1. Décompresse le ZIP.
+2. GitHub > dépôt > branche `main`.
+3. Add file > Upload files.
+4. Glisse tous les fichiers/dossiers.
+5. Commit directement sur `main`.
 
-## 2. Publier sur GitHub Pages
-1. Uploader tous les fichiers à la racine du dépôt GitHub.
-2. Settings > Pages.
-3. Deploy from a branch.
-4. Branch : `main`.
-5. Folder : `/ (root)`.
+Les fichiers portant le même nom seront remplacés.
 
-## 3. Configurer Supabase Auth
-Une fois l'URL GitHub Pages connue :
-Supabase > Authentication > URL Configuration
-- Site URL : `https://TON-PSEUDO.github.io/mes-achats/`
-- Redirect URLs : ajouter la même URL.
-
-Tu pourras ensuite confirmer ton email.
-
-## 4. Installer sur iPhone
-Safari > ouvrir l'URL GitHub Pages > Partager > Sur l'écran d'accueil.
+## Si l'iPhone garde l'ancienne version
+Ouvre d'abord l'URL GitHub Pages dans Safari et recharge la page, puis ferme/réouvre la PWA.

@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#f7f3ec" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Mes envies" />
-  <title>Mes envies</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-  <link rel="stylesheet" href="./styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7f3ec">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Achats">
+  <title>Achats</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div id="toast" class="toast"></div>
@@ -17,121 +17,165 @@
   <section id="authView" class="auth-shell">
     <div class="auth-card">
       <div class="brand-mark">♡</div>
-      <h1>Mes envies</h1>
-      <p class="muted">Tes idées d’achats, cadeaux et ventes au même endroit.</p>
+      <h1>Achats</h1>
+      <p class="muted">Tes idées, modèles trouvés et achats au même endroit.</p>
       <form id="loginForm" class="form-stack">
-        <label>Email<input id="loginEmail" type="email" autocomplete="email" required placeholder="ton@email.fr"></label>
-        <label>Mot de passe<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <label>Email<input id="loginEmail" type="email" autocomplete="email" required></label>
+        <label>Mot de passe<input id="loginPassword" type="password" autocomplete="current-password" required></label>
         <button class="btn primary" type="submit">Se connecter</button>
       </form>
       <p id="authMessage" class="helper"></p>
-      <p class="tiny muted">Pas d’inscription depuis l’app : seuls les comptes déjà créés dans Supabase peuvent se connecter.</p>
     </div>
   </section>
 
   <main id="appView" class="app hidden">
     <header class="topbar">
-      <div><div class="eyebrow">MON ESPACE</div><h1 id="pageTitle">Mes envies</h1></div>
+      <div>
+        <div class="eyebrow">MON ESPACE</div>
+        <h1 id="pageTitle">Achats</h1>
+      </div>
       <button id="addButton" class="icon-btn" aria-label="Ajouter">＋</button>
     </header>
 
     <section id="dashboardView" class="view active">
+      <div class="section-title">Par statut</div>
       <div class="summary-grid">
-        <button class="summary-card" data-jump="buy" data-status-filter="idea"><span>💡</span><strong id="countIdeas">0</strong><small>Idées</small></button>
-        <button class="summary-card" data-jump="buy" data-status-filter="model_found"><span>🔎</span><strong id="countModels">0</strong><small>Modèles trouvés</small></button>
-        <button class="summary-card" data-jump="buy" data-status-filter="waiting_price"><span>💰</span><strong id="countWaiting">0</strong><small>À surveiller</small></button>
-        <button class="summary-card" data-jump="buy" data-status-filter="buy_soon"><span>🔥</span><strong id="countUrgent">0</strong><small>À acheter vite</small></button>
+        <button class="summary-card" data-jump="buy" data-status-filter="idea">
+          <span>💡</span><strong id="countIdeas">0</strong><small>Idées</small>
+        </button>
+        <button class="summary-card" data-jump="buy" data-status-filter="model_found">
+          <span>🔎</span><strong id="countModels">0</strong><small>Modèle trouvé</small>
+        </button>
+        <button class="summary-card" data-jump="buy" data-status-filter="purchased">
+          <span>✅</span><strong id="countPurchased">0</strong><small>Achetés</small>
+        </button>
       </div>
-      <section class="section-block">
-        <div class="section-head"><div><div class="eyebrow">À CONTINUER</div><h2>Mes achats en cours</h2></div><button class="link-btn" data-jump="buy">Voir tout</button></div>
-        <div id="dashboardItems" class="cards"></div>
-      </section>
-      <section class="section-block">
-        <div class="section-head"><div><div class="eyebrow">CADEAUX</div><h2>Par personne</h2></div><button class="link-btn" data-jump="gifts">Gérer</button></div>
-        <div id="peoplePreview" class="people-row"></div>
-      </section>
+
+      <div class="section-title priority-title">Par priorité</div>
+      <div class="priority-grid">
+        <button class="priority-card low" data-jump="buy" data-priority-filter="low"><span>Basse</span><strong id="countLow">0</strong></button>
+        <button class="priority-card medium" data-jump="buy" data-priority-filter="medium"><span>Moyenne</span><strong id="countMedium">0</strong></button>
+        <button class="priority-card high" data-jump="buy" data-priority-filter="high"><span>Haute</span><strong id="countHigh">0</strong></button>
+        <button class="priority-card urgent" data-jump="buy" data-priority-filter="urgent"><span>Urgent</span><strong id="countUrgent">0</strong></button>
+      </div>
     </section>
 
     <section id="buyView" class="view">
       <div class="toolbar">
-        <div class="segmented" id="buyStatusChips">
-          <button class="chip active" data-status="">Tous</button><button class="chip" data-status="idea">Idées</button><button class="chip" data-status="model_found">Modèle trouvé</button><button class="chip" data-status="waiting_price">Bon prix</button><button class="chip" data-status="buy_soon">Urgent</button>
+        <input id="buySearch" class="search" type="search" placeholder="Rechercher un achat…">
+
+        <div>
+          <div class="filter-label">Statut</div>
+          <div class="segmented" id="buyStatusChips">
+            <button class="chip active" data-status="">Tous</button>
+            <button class="chip" data-status="idea">Idée</button>
+            <button class="chip" data-status="model_found">Modèle trouvé</button>
+            <button class="chip" data-status="purchased">Acheté</button>
+          </div>
         </div>
-        <input id="buySearch" class="search" type="search" placeholder="Rechercher une envie…">
+
+        <div>
+          <div class="filter-label">Priorité</div>
+          <div class="segmented" id="buyPriorityChips">
+            <button class="chip active" data-priority="">Toutes</button>
+            <button class="chip" data-priority="low">Basse</button>
+            <button class="chip" data-priority="medium">Moyenne</button>
+            <button class="chip" data-priority="high">Haute</button>
+            <button class="chip" data-priority="urgent">Urgent</button>
+          </div>
+        </div>
       </div>
       <div id="buyItems" class="cards"></div>
     </section>
 
     <section id="giftsView" class="view">
-      <div class="section-head"><div><div class="eyebrow">CADEAUX</div><h2>Mes personnes</h2></div><button id="addPersonButton" class="btn subtle">＋ Personne</button></div>
-      <div id="peopleList" class="people-list"></div>
-      <section class="section-block"><div class="section-head"><h2>Idées cadeaux</h2></div><div id="giftItems" class="cards"></div></section>
-    </section>
-
-    <section id="sellView" class="view">
-      <div class="toolbar">
-        <div class="segmented" id="sellStatusChips">
-          <button class="chip active" data-status="">Tous</button><button class="chip" data-status="to_sell">À vendre</button><button class="chip" data-status="listed">En ligne</button><button class="chip" data-status="reserved">Réservé</button><button class="chip" data-status="sold">Vendu</button>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">CADEAUX</div>
+          <h2>Mes personnes</h2>
         </div>
-        <input id="sellSearch" class="search" type="search" placeholder="Rechercher une vente…">
+        <button id="addPersonButton" class="btn subtle">＋ Personne</button>
       </div>
-      <div id="sellItems" class="cards"></div>
-    </section>
+      <div id="peopleList" class="people-list"></div>
 
-    <section id="profileView" class="view">
-      <div class="profile-card"><div class="avatar">♡</div><h2>Mon compte</h2><p id="userEmail" class="muted"></p><button id="logoutButton" class="btn danger">Se déconnecter</button></div>
-      <div class="info-card"><h3>À propos de tes données</h3><p>Les données sont stockées dans Supabase et protégées par les règles RLS de tes tables.</p></div>
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Idées cadeaux</h2>
+          <button id="clearGiftPersonFilter" class="link-btn hidden">Tout voir</button>
+        </div>
+        <div id="giftItems" class="cards"></div>
+      </section>
     </section>
 
     <nav class="bottom-nav">
       <button class="nav-item active" data-view="dashboard"><span>⌂</span><small>Accueil</small></button>
       <button class="nav-item" data-view="buy"><span>♡</span><small>Achats</small></button>
       <button class="nav-item" data-view="gifts"><span>🎁</span><small>Cadeaux</small></button>
-      <button class="nav-item" data-view="sell"><span>↗</span><small>Vendre</small></button>
-      <button class="nav-item" data-view="profile"><span>◎</span><small>Profil</small></button>
     </nav>
   </main>
 
   <dialog id="itemDialog" class="dialog">
     <form id="itemForm" method="dialog">
-      <div class="dialog-head"><div><div class="eyebrow" id="itemDialogEyebrow">NOUVELLE IDÉE</div><h2 id="itemDialogTitle">Ajouter une envie</h2></div><button type="button" class="icon-btn ghost" data-close="itemDialog">×</button></div>
+      <div class="dialog-head">
+        <div><div class="eyebrow">ACHAT</div><h2 id="itemDialogTitle">Ajouter une idée</h2></div>
+        <button type="button" class="icon-btn ghost" data-close="itemDialog">×</button>
+      </div>
+
       <input id="itemId" type="hidden">
+
       <div class="form-grid">
-        <label>Type<select id="itemType"><option value="buy">Achat</option><option value="sell">Vente</option></select></label>
+        <label class="full">Nom de l’idée *<input id="itemTitle" required placeholder="Ex. Manteau d’hiver"></label>
         <label>Catégorie<select id="itemCategory"></select></label>
-        <label class="full">Nom de l’idée *<input id="itemTitle" required placeholder="Ex. Baskets de running"></label>
-        <label>Statut<select id="itemStatus"></select></label>
-        <label>Priorité<select id="itemPriority"><option value="low">Faible</option><option value="normal" selected>Normale</option><option value="high">Haute</option></select></label>
+        <label>Statut
+          <select id="itemStatus">
+            <option value="idea">Idée</option>
+            <option value="model_found">Modèle trouvé - En cours d'achat</option>
+            <option value="purchased">Acheté</option>
+          </select>
+        </label>
+        <label>Priorité
+          <select id="itemPriority">
+            <option value="low">Basse</option>
+            <option value="medium" selected>Moyenne</option>
+            <option value="high">Haute</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </label>
         <label id="personField">Pour qui ?<select id="itemPerson"></select></label>
-        <label class="full">Notes<textarea id="itemNotes" rows="3" placeholder="Taille, contraintes, comparaison à faire…"></textarea></label>
+        <label class="full">Commentaire<textarea id="itemNotes" rows="3"></textarea></label>
 
         <div id="modelFields" class="full model-fields">
-          <div class="subsection-title full">Quand tu as trouvé le modèle</div>
+          <div class="subsection-title">Quand le modèle est trouvé</div>
           <label class="full">Modèle précis<input id="itemModelName" placeholder="Ex. Hoka Clifton 10 Wide"></label>
           <label class="full">Lien produit<input id="itemProductUrl" type="url" placeholder="https://…"></label>
-          <label class="full">Image / aperçu (URL)<input id="itemPreviewImage" type="url" placeholder="https://…/photo.jpg"></label>
-          <label>Dernier prix vu<input id="itemLastPrice" type="number" inputmode="decimal" step="0.01" placeholder="160"></label>
-          <label>Prix cible<input id="itemTargetPrice" type="number" inputmode="decimal" step="0.01" placeholder="140"></label>
-          <label>Marchand<input id="itemMerchant" placeholder="Hoka, Sézane…"></label>
-        </div>
-
-        <div id="saleFields" class="full sale-fields">
-          <div class="subsection-title full">Vente</div>
-          <label>Plateforme<input id="salePlatform" placeholder="Vinted, Leboncoin…"></label>
-          <label>Prix affiché<input id="saleAskingPrice" type="number" step="0.01" inputmode="decimal"></label>
-          <label>Prix minimum<input id="saleMinPrice" type="number" step="0.01" inputmode="decimal"></label>
-          <label class="full">Lien de l’annonce<input id="saleListingUrl" type="url" placeholder="https://…"></label>
+          <label class="full">Image / aperçu (URL)<input id="itemPreviewImage" type="url" placeholder="https://…/image.jpg"></label>
+          <label>Dernier prix vu<input id="itemLastPrice" type="number" step="0.01" inputmode="decimal"></label>
+          <label>Prix cible<input id="itemTargetPrice" type="number" step="0.01" inputmode="decimal"></label>
+          <label>Marchand<input id="itemMerchant" placeholder="Hoka, Uniqlo, Fnac…"></label>
         </div>
       </div>
-      <div class="dialog-actions"><button id="deleteItemButton" type="button" class="btn danger-outline hidden">Supprimer</button><div class="grow"></div><button type="button" class="btn subtle" data-close="itemDialog">Annuler</button><button type="submit" class="btn primary">Enregistrer</button></div>
+
+      <div class="dialog-actions">
+        <button id="deleteItemButton" type="button" class="btn danger-outline hidden">Supprimer</button>
+        <div class="grow"></div>
+        <button type="button" class="btn subtle" data-close="itemDialog">Annuler</button>
+        <button type="submit" class="btn primary">Enregistrer</button>
+      </div>
     </form>
   </dialog>
 
   <dialog id="personDialog" class="dialog small">
     <form id="personForm" method="dialog">
-      <div class="dialog-head"><div><div class="eyebrow">CADEAUX</div><h2>Ajouter une personne</h2></div><button type="button" class="icon-btn ghost" data-close="personDialog">×</button></div>
+      <div class="dialog-head">
+        <div><div class="eyebrow">CADEAUX</div><h2>Ajouter une personne</h2></div>
+        <button type="button" class="icon-btn ghost" data-close="personDialog">×</button>
+      </div>
       <label>Prénom / nom<input id="personName" required placeholder="Ex. Maman"></label>
-      <div class="dialog-actions"><div class="grow"></div><button type="button" class="btn subtle" data-close="personDialog">Annuler</button><button type="submit" class="btn primary">Ajouter</button></div>
+      <div class="dialog-actions">
+        <div class="grow"></div>
+        <button type="button" class="btn subtle" data-close="personDialog">Annuler</button>
+        <button type="submit" class="btn primary">Ajouter</button>
+      </div>
     </form>
   </dialog>
 
