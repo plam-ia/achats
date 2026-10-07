@@ -5,29 +5,40 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f7f3ec">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Achats">
   <title>Achats</title>
+
   <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon.png">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div id="toast" class="toast"></div>
 
+  <!-- CONNEXION -->
   <section id="authView" class="auth-shell">
     <div class="auth-card">
       <div class="brand-mark">♡</div>
       <h1>Achats</h1>
-      <p class="muted">Tes idées, modèles trouvés et achats au même endroit.</p>
+      <p class="muted">Tes idées, modèles trouvés et cadeaux au même endroit.</p>
+
       <form id="loginForm" class="form-stack">
-        <label>Email<input id="loginEmail" type="email" autocomplete="email" required></label>
-        <label>Mot de passe<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+        <label>Email
+          <input id="loginEmail" type="email" autocomplete="email" required>
+        </label>
+        <label>Mot de passe
+          <input id="loginPassword" type="password" autocomplete="current-password" required>
+        </label>
         <button class="btn primary" type="submit">Se connecter</button>
       </form>
+
       <p id="authMessage" class="helper"></p>
     </div>
   </section>
 
+  <!-- APP -->
   <main id="appView" class="app hidden">
     <header class="topbar">
       <div>
@@ -37,57 +48,42 @@
       <button id="addButton" class="icon-btn" aria-label="Ajouter">＋</button>
     </header>
 
-    <section id="dashboardView" class="view active">
-      <div class="section-title">Par statut</div>
-      <div class="summary-grid">
-        <button class="summary-card" data-jump="buy" data-status-filter="idea">
-          <span>💡</span><strong id="countIdeas">0</strong><small>Idées</small>
-        </button>
-        <button class="summary-card" data-jump="buy" data-status-filter="model_found">
-          <span>🔎</span><strong id="countModels">0</strong><small>Modèle trouvé</small>
-        </button>
-        <button class="summary-card" data-jump="buy" data-status-filter="purchased">
-          <span>✅</span><strong id="countPurchased">0</strong><small>Achetés</small>
-        </button>
-      </div>
-
-      <div class="section-title priority-title">Par priorité</div>
-      <div class="priority-grid">
-        <button class="priority-card low" data-jump="buy" data-priority-filter="low"><span>Basse</span><strong id="countLow">0</strong></button>
-        <button class="priority-card medium" data-jump="buy" data-priority-filter="medium"><span>Moyenne</span><strong id="countMedium">0</strong></button>
-        <button class="priority-card high" data-jump="buy" data-priority-filter="high"><span>Haute</span><strong id="countHigh">0</strong></button>
-        <button class="priority-card urgent" data-jump="buy" data-priority-filter="urgent"><span>Urgent</span><strong id="countUrgent">0</strong></button>
-      </div>
-    </section>
-
-    <section id="buyView" class="view">
+    <!-- ACHATS -->
+    <section id="buyView" class="view active">
       <div class="toolbar">
         <input id="buySearch" class="search" type="search" placeholder="Rechercher un achat…">
 
-        <div>
+        <div class="filter-block">
           <div class="filter-label">Statut</div>
           <div class="segmented" id="buyStatusChips">
-            <button class="chip active" data-status="">Tous</button>
+            <button class="chip active" data-status="active">En cours</button>
             <button class="chip" data-status="idea">Idée</button>
             <button class="chip" data-status="model_found">Modèle trouvé</button>
             <button class="chip" data-status="purchased">Acheté</button>
           </div>
         </div>
 
-        <div>
+        <div class="filter-block">
           <div class="filter-label">Priorité</div>
           <div class="segmented" id="buyPriorityChips">
             <button class="chip active" data-priority="">Toutes</button>
-            <button class="chip" data-priority="low">Basse</button>
-            <button class="chip" data-priority="medium">Moyenne</button>
+            <button class="chip urgent-chip" data-priority="urgent">Urgent</button>
             <button class="chip" data-priority="high">Haute</button>
-            <button class="chip" data-priority="urgent">Urgent</button>
+            <button class="chip" data-priority="medium">Moyenne</button>
+            <button class="chip" data-priority="low">Basse</button>
           </div>
         </div>
+
+        <div class="filter-block">
+          <div class="filter-label">Catégorie</div>
+          <div class="segmented" id="buyCategoryChips"></div>
+        </div>
       </div>
+
       <div id="buyItems" class="cards"></div>
     </section>
 
+    <!-- CADEAUX -->
     <section id="giftsView" class="view">
       <div class="section-head">
         <div>
@@ -96,6 +92,7 @@
         </div>
         <button id="addPersonButton" class="btn subtle">＋ Personne</button>
       </div>
+
       <div id="peopleList" class="people-list"></div>
 
       <section class="section-block">
@@ -108,24 +105,37 @@
     </section>
 
     <nav class="bottom-nav">
-      <button class="nav-item active" data-view="dashboard"><span>⌂</span><small>Accueil</small></button>
-      <button class="nav-item" data-view="buy"><span>♡</span><small>Achats</small></button>
-      <button class="nav-item" data-view="gifts"><span>🎁</span><small>Cadeaux</small></button>
+      <button class="nav-item active" data-view="buy">
+        <span>♡</span><small>Achats</small>
+      </button>
+      <button class="nav-item" data-view="gifts">
+        <span>🎁</span><small>Cadeaux</small>
+      </button>
     </nav>
   </main>
 
+  <!-- ITEM -->
   <dialog id="itemDialog" class="dialog">
     <form id="itemForm" method="dialog">
       <div class="dialog-head">
-        <div><div class="eyebrow">ACHAT</div><h2 id="itemDialogTitle">Ajouter une idée</h2></div>
+        <div>
+          <div class="eyebrow">ACHAT</div>
+          <h2 id="itemDialogTitle">Ajouter une idée</h2>
+        </div>
         <button type="button" class="icon-btn ghost" data-close="itemDialog">×</button>
       </div>
 
       <input id="itemId" type="hidden">
 
       <div class="form-grid">
-        <label class="full">Nom de l’idée *<input id="itemTitle" required placeholder="Ex. Manteau d’hiver"></label>
-        <label>Catégorie<select id="itemCategory"></select></label>
+        <label class="full">Nom de l’idée *
+          <input id="itemTitle" required placeholder="Ex. Manteau d’hiver">
+        </label>
+
+        <label>Catégorie
+          <select id="itemCategory"></select>
+        </label>
+
         <label>Statut
           <select id="itemStatus">
             <option value="idea">Idée</option>
@@ -133,6 +143,7 @@
             <option value="purchased">Acheté</option>
           </select>
         </label>
+
         <label>Priorité
           <select id="itemPriority">
             <option value="low">Basse</option>
@@ -141,17 +152,42 @@
             <option value="urgent">Urgent</option>
           </select>
         </label>
-        <label id="personField">Pour qui ?<select id="itemPerson"></select></label>
-        <label class="full">Commentaire<textarea id="itemNotes" rows="3"></textarea></label>
+
+        <label id="personField">Pour qui ?
+          <select id="itemPerson"></select>
+        </label>
+
+        <label class="full">Image / aperçu
+          <input id="itemPreviewImage" type="url" placeholder="https://…/image.jpg">
+          <span class="field-hint">Disponible dès le stade Idée.</span>
+        </label>
+
+        <label class="full">Commentaire
+          <textarea id="itemNotes" rows="3" placeholder="Ex. comparer plusieurs modèles, attendre une promo…"></textarea>
+        </label>
 
         <div id="modelFields" class="full model-fields">
-          <div class="subsection-title">Quand le modèle est trouvé</div>
-          <label class="full">Modèle précis<input id="itemModelName" placeholder="Ex. Hoka Clifton 10 Wide"></label>
-          <label class="full">Lien produit<input id="itemProductUrl" type="url" placeholder="https://…"></label>
-          <label class="full">Image / aperçu (URL)<input id="itemPreviewImage" type="url" placeholder="https://…/image.jpg"></label>
-          <label>Dernier prix vu<input id="itemLastPrice" type="number" step="0.01" inputmode="decimal"></label>
-          <label>Prix cible<input id="itemTargetPrice" type="number" step="0.01" inputmode="decimal"></label>
-          <label>Marchand<input id="itemMerchant" placeholder="Hoka, Uniqlo, Fnac…"></label>
+          <div class="subsection-title">Modèle trouvé</div>
+
+          <label class="full">Modèle précis
+            <input id="itemModelName" placeholder="Ex. Hoka Clifton 10 Wide">
+          </label>
+
+          <label class="full">Lien produit
+            <input id="itemProductUrl" type="url" placeholder="https://…">
+          </label>
+
+          <label>Dernier prix vu
+            <input id="itemLastPrice" type="number" step="0.01" inputmode="decimal">
+          </label>
+
+          <label>Prix cible
+            <input id="itemTargetPrice" type="number" step="0.01" inputmode="decimal">
+          </label>
+
+          <label>Marchand
+            <input id="itemMerchant" placeholder="Hoka, Uniqlo, Fnac…">
+          </label>
         </div>
       </div>
 
@@ -164,17 +200,56 @@
     </form>
   </dialog>
 
+  <!-- PERSONNE -->
   <dialog id="personDialog" class="dialog small">
     <form id="personForm" method="dialog">
       <div class="dialog-head">
-        <div><div class="eyebrow">CADEAUX</div><h2>Ajouter une personne</h2></div>
+        <div>
+          <div class="eyebrow">CADEAUX</div>
+          <h2>Ajouter une personne</h2>
+        </div>
         <button type="button" class="icon-btn ghost" data-close="personDialog">×</button>
       </div>
-      <label>Prénom / nom<input id="personName" required placeholder="Ex. Maman"></label>
+
+      <label>Prénom / nom
+        <input id="personName" required placeholder="Ex. Maman">
+      </label>
+
       <div class="dialog-actions">
         <div class="grow"></div>
         <button type="button" class="btn subtle" data-close="personDialog">Annuler</button>
         <button type="submit" class="btn primary">Ajouter</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MOT DE PASSE : uniquement après le lien Reset password Supabase -->
+  <dialog id="passwordDialog" class="dialog small">
+    <form id="passwordForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <div class="eyebrow">SÉCURITÉ</div>
+          <h2>Choisir mon mot de passe</h2>
+        </div>
+      </div>
+
+      <p class="muted password-copy">
+        Définis-le une fois : tu pourras ensuite te connecter normalement avec ton email.
+      </p>
+
+      <label>Nouveau mot de passe
+        <input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+      </label>
+
+      <label>Confirmer le mot de passe
+        <input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required>
+      </label>
+
+      <p id="passwordMessage" class="helper"></p>
+
+      <div class="dialog-actions">
+        <div class="grow"></div>
+        <button type="submit" class="btn primary">Enregistrer mon mot de passe</button>
       </div>
     </form>
   </dialog>
