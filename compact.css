@@ -1,0 +1,119 @@
+
+/* === VERSION COMPACTE DES CARTES ACHATS === */
+
+.cards{
+  gap:8px;
+}
+
+.item-card{
+  padding:10px 11px;
+  border-radius:16px;
+}
+
+.item-top{
+  grid-template-columns:56px minmax(0,1fr) auto;
+  gap:9px;
+  align-items:start;
+}
+
+.thumb{
+  width:56px;
+  height:56px;
+  border-radius:13px;
+  font-size:1.15rem;
+}
+
+.item-title{
+  font-size:1rem;
+  line-height:1.1;
+  margin-bottom:2px;
+}
+
+.item-model{
+  font-size:.76rem;
+  line-height:1.15;
+  margin-top:1px;
+}
+
+.item-sub{
+  font-size:.72rem;
+  line-height:1.2;
+  margin-top:2px;
+}
+
+.meta-row{
+  gap:5px;
+  margin-top:5px;
+}
+
+.badge{
+  padding:3px 7px;
+  font-size:.64rem;
+  line-height:1.15;
+}
+
+.price-box{
+  font-size:.82rem;
+  line-height:1.15;
+}
+
+.price-target{
+  font-size:.64rem;
+  margin-top:2px;
+}
+
+/* Le commentaire reste visible mais ne prend pas toute la carte */
+.item-comment{
+  margin-top:7px;
+  padding-top:7px;
+  font-size:.76rem;
+  line-height:1.3;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.item-actions{
+  gap:10px;
+  margin-top:6px;
+  min-height:18px;
+}
+
+.product-link,
+.edit-link{
+  font-size:.72rem;
+}
+
+/* Réduit aussi légèrement l'espace entre filtres et cartes */
+.toolbar{
+  gap:11px;
+  margin-bottom:12px;
+}
+
+.segmented{
+  gap:6px;
+}
+
+.chip{
+  padding:7px 10px;
+  font-size:.72rem;
+}
+
+@media(max-width:560px){
+  .item-top{
+    grid-template-columns:52px minmax(0,1fr) auto;
+    gap:8px;
+  }
+
+  .thumb{
+    width:52px;
+    height:52px;
+  }
+
+  /* Conserve le prix sur la même ligne quand il y a assez de place */
+  .price-box{
+    grid-column:auto;
+    text-align:right;
+  }
+}
