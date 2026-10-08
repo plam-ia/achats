@@ -94,3 +94,136 @@ input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;bo
   .thumb{width:62px;height:62px}
   .price-box{grid-column:2;text-align:left}
 }
+
+/* =========================================================
+   CARTES ACHATS - VERSION COMPACTE V2
+   ========================================================= */
+
+.cards{
+  gap:6px !important;
+}
+
+.item-card{
+  padding:8px 10px !important;
+  border-radius:15px !important;
+}
+
+.item-top{
+  grid-template-columns:48px minmax(0,1fr) auto !important;
+  gap:8px !important;
+  align-items:start !important;
+}
+
+.thumb{
+  width:48px !important;
+  height:48px !important;
+  border-radius:12px !important;
+  font-size:1rem !important;
+}
+
+.item-title{
+  font-size:.95rem !important;
+  line-height:1.05 !important;
+  margin:0 0 1px 0 !important;
+}
+
+.item-model{
+  font-size:.72rem !important;
+  line-height:1.1 !important;
+  margin:0 !important;
+}
+
+.item-sub{
+  font-size:.68rem !important;
+  line-height:1.1 !important;
+  margin-top:1px !important;
+}
+
+.meta-row{
+  gap:4px !important;
+  margin-top:4px !important;
+}
+
+.badge{
+  padding:2px 6px !important;
+  font-size:.61rem !important;
+  line-height:1.1 !important;
+}
+
+.price-box{
+  font-size:.76rem !important;
+  line-height:1.1 !important;
+  white-space:nowrap !important;
+}
+
+.price{
+  font-size:.84rem !important;
+}
+
+.price-target{
+  font-size:.60rem !important;
+  margin-top:1px !important;
+}
+
+.item-comment{
+  margin-top:5px !important;
+  padding-top:5px !important;
+  font-size:.70rem !important;
+  line-height:1.2 !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:1 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+.item-actions{
+  gap:8px !important;
+  margin-top:4px !important;
+  min-height:16px !important;
+}
+
+.product-link,
+.edit-link{
+  font-size:.68rem !important;
+  line-height:1.1 !important;
+}
+
+.toolbar{
+  gap:8px !important;
+  margin-bottom:9px !important;
+}
+
+.filter-block{
+  gap:4px !important;
+}
+
+.filter-label{
+  margin-bottom:2px !important;
+  font-size:.68rem !important;
+}
+
+.segmented{
+  gap:5px !important;
+}
+
+.chip{
+  padding:6px 9px !important;
+  font-size:.69rem !important;
+}
+
+@media(max-width:560px){
+  .item-top{
+    grid-template-columns:46px minmax(0,1fr) auto !important;
+    gap:7px !important;
+  }
+
+  .thumb{
+    width:46px !important;
+    height:46px !important;
+  }
+
+  .price-box{
+    grid-column:auto !important;
+    text-align:right !important;
+  }
+}
