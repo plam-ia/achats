@@ -41,7 +41,6 @@ function sortByUrgency(list){
 }
 
 function itemCard(it){
-  const person=people.find(p=>p.id===it.person_id);
   const preview=it.preview_image_url?`<img src="${esc(it.preview_image_url)}" alt="">`:`<span>${emoji(it.category)}</span>`;
   const price=it.last_seen_price!=null?`<div class="price">${money(it.last_seen_price)}</div>`:"";
   const target=it.target_price!=null?`<div class="price-target">cible ${money(it.target_price)}</div>`:"";
@@ -53,8 +52,6 @@ function itemCard(it){
       <div class="thumb">${preview}</div>
       <div>
         <div class="item-title">${esc(it.title)}</div>
-        ${it.model_name?`<div class="item-model">${esc(it.model_name)}</div>`:""}
-        <div class="item-sub">${esc([it.category,person?.name,it.merchant].filter(Boolean).join(" · "))}</div>
         <div class="meta-row">
           <span class="badge ${it.status==="purchased"?"green":""}">${esc(statusLabel(it.status))}</span>
           <span class="badge ${esc(it.priority)}">${esc(priorityLabel(it.priority))}</span>
@@ -79,12 +76,10 @@ async function init(){
 
   sb=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_PUBLISHABLE_KEY);
 
-  // Listener AVANT getSession pour ne pas rater PASSWORD_RECOVERY.
   sb.auth.onAuthStateChange((event,session)=>{
     setTimeout(async()=>{
       if(session?.user){
         if(!currentUser) await enterApp(session.user);
-
         if(event==="PASSWORD_RECOVERY" || recoveryHint || sessionStorage.getItem("passwordRecovery")==="1"){
           sessionStorage.setItem("passwordRecovery","1");
           openPasswordDialog();
@@ -157,7 +152,6 @@ function renderBuy(){
   const q=$("buySearch").value.trim().toLowerCase();
   let list=[...items];
 
-  // Par défaut : seulement les achats non terminés.
   if(buyStatusFilter==="active"){
     list=list.filter(i=>i.status!=="purchased");
   } else if(buyStatusFilter){
@@ -305,10 +299,7 @@ async function saveItem(e){
     status,
     priority:$("itemPriority").value,
     notes:$("itemNotes").value.trim()||null,
-
-    // L'image est maintenant disponible même au stade "Idée".
     preview_image_url:$("itemPreviewImage").value.trim()||null,
-
     model_name:
       status!=="idea"
         ? ($("itemModelName").value.trim()||null)
@@ -392,7 +383,6 @@ async function addPerson(e){
   await reloadAll();
 }
 
-/* AUTH */
 $("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();
   $("authMessage").textContent="";
@@ -405,7 +395,6 @@ $("loginForm").addEventListener("submit",async e=>{
   if(error) $("authMessage").textContent=error.message;
 });
 
-/* RESET PASSWORD : définir une fois le vrai mot de passe */
 function openPasswordDialog(){
   if(!$("passwordDialog").open) $("passwordDialog").showModal();
 }
@@ -440,7 +429,6 @@ $("passwordForm").addEventListener("submit",async e=>{
   toast("Mot de passe enregistré");
 });
 
-/* ITEM / PERSON */
 $("addButton").onclick=openNew;
 $("addPersonButton").onclick=()=>$("personDialog").showModal();
 $("itemForm").addEventListener("submit",saveItem);
@@ -454,12 +442,10 @@ document.querySelectorAll("[data-close]").forEach(b=>{
   b.onclick=()=>$(b.dataset.close).close();
 });
 
-/* NAV */
 document.querySelectorAll(".nav-item").forEach(b=>{
   b.onclick=()=>switchView(b.dataset.view);
 });
 
-/* FILTRE STATUT */
 document.querySelectorAll("#buyStatusChips .chip").forEach(c=>{
   c.onclick=()=>{
     buyStatusFilter=c.dataset.status;
@@ -469,7 +455,6 @@ document.querySelectorAll("#buyStatusChips .chip").forEach(c=>{
   };
 });
 
-/* FILTRE PRIORITE */
 document.querySelectorAll("#buyPriorityChips .chip").forEach(c=>{
   c.onclick=()=>{
     buyPriorityFilter=c.dataset.priority;
@@ -479,7 +464,6 @@ document.querySelectorAll("#buyPriorityChips .chip").forEach(c=>{
   };
 });
 
-/* CADEAUX */
 document.addEventListener("click",e=>{
   const p=e.target.closest("[data-person-filter]");
   if(p){
@@ -492,10 +476,9 @@ $("clearGiftPersonFilter").onclick=()=>{
   renderGifts();
 };
 
-/* PWA */
 if("serviceWorker" in navigator){
   window.addEventListener("load",()=>{
-    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+    navigator.serviceWorker.register("./sw.js?v=4").catch(()=>{});
   });
 }
 

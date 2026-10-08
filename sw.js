@@ -1,5 +1,5 @@
-const CACHE="achats-v1-compact-v4";
-const CORE=["./","./index.html","./styles.css","./app.js","./config.js","./manifest.json"];
+const CACHE="achats-v4-epuree";
+const CORE=["./","./index.html?v=4","./styles.css?v=4","./app.js?v=4","./config.js","./manifest.json?v=4"];
 
 self.addEventListener("install",e=>{
   self.skipWaiting();

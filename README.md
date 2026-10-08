@@ -1,20 +1,37 @@
-# Patch cartes compactes + icônes à la racine
+# Achats — version épurée
 
-Ce patch ne touche ni à Supabase, ni à app.js, ni à config.js.
+Modifications :
+- nouvel icône root :
+  - apple-touch-icon.png
+  - icon-192.png
+  - icon-512.png
+- réduction de l'espace entre le titre et la zone de recherche
+- dans les cartes de liste :
+  - suppression de la ligne modèle
+  - suppression de la ligne catégorie / marchand
+- ces infos restent accessibles quand tu cliques sur l'item (dialogue détail/édition)
+- cache du service worker renouvelé
 
-À uploader directement à la racine de la branche main :
+## Important
+Le ZIP ne contient pas `config.js`.
+Garde ton `config.js` actuel dans le dépôt.
+
+## Fichiers à uploader sur la branche main
 - index.html
-- compact.css
+- styles.css
+- app.js
 - manifest.json
+- sw.js
 
-Les icônes doivent rester à la racine :
-- apple-touch-icon.png
-- icon-192.png
-- icon-512.png
+## Après upload
+1. Commit sur `main`
+2. Ouvre l'URL GitHub Pages dans Safari
+3. Recharge 2 fois
+4. Ferme complètement la PWA
+5. Rouvre-la
 
-Le CSS compact :
-- réduit la taille de l'image
-- réduit padding et espacements
-- réduit les badges
-- limite le commentaire à 2 lignes
-- garde lien et bouton Modifier visibles
+Si l'ancienne icône reste :
+- supprime le raccourci de l'écran d'accueil
+- ouvre Safari
+- recharge le site
+- Partager > Sur l'écran d'accueil
