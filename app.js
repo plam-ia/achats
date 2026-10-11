@@ -219,7 +219,7 @@ function renderPeople() {
       const count = items.filter((i) => i.category === "Cadeaux" && i.person_id === p.id).length;
       return `
         <div class="person-row">
-          <div class="person-avatar">${personEmoji(p.name)}</div>
+          <div class="person-avatar">${p.emoji || personEmoji(p.name)}</div>
           <div class="grow">
             <strong>${esc(p.name)}</strong>
             <div class="muted">${count} idée${count > 1 ? "s" : ""}</div>
@@ -315,9 +315,17 @@ function openItem(id) {
   $("itemDialog").showModal();
 }
 
+function setSelectedEmoji(emoji) {
+  $("personEmoji").value = emoji || "";
+  document.querySelectorAll(".emoji-choice").forEach((b) => {
+    b.classList.toggle("selected", b.dataset.emoji === emoji);
+  });
+}
+
 function openNewPerson() {
   $("personForm").reset();
   $("personId").value = "";
+  setSelectedEmoji("🧑");
   $("personDialogTitle").textContent = "Ajouter une personne";
   $("deletePersonButton").classList.add("hidden");
   $("personDialog").showModal();
@@ -328,6 +336,7 @@ function openEditPerson(id) {
   if (!p) return;
   $("personId").value = p.id;
   $("personName").value = p.name || "";
+  setSelectedEmoji(p.emoji || personEmoji(p.name));
   $("personDialogTitle").textContent = "Modifier une personne";
   $("deletePersonButton").classList.remove("hidden");
   $("personDialog").showModal();
@@ -399,11 +408,12 @@ async function savePerson(e) {
   e.preventDefault();
   const id = $("personId").value;
   const name = $("personName").value.trim();
+  const emoji = $("personEmoji").value || null;
   if (!name) return;
 
   const res = id
-    ? await sb.from("people").update({ name }).eq("id", id)
-    : await sb.from("people").insert({ user_id: currentUser.id, name });
+    ? await sb.from("people").update({ name, emoji }).eq("id", id)
+    : await sb.from("people").insert({ user_id: currentUser.id, name, emoji });
 
   if (res.error) {
     toast("Erreur : " + res.error.message);
@@ -528,9 +538,14 @@ $("clearGiftPersonFilter").onclick = () => {
   renderGifts();
 };
 
+
+document.querySelectorAll(".emoji-choice").forEach((b) => {
+  b.onclick = () => setSelectedEmoji(b.dataset.emoji);
+});
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js?v=5").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=6").catch(() => {});
   });
 }
 

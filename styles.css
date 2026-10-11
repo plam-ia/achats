@@ -33,3 +33,28 @@ input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;bo
 .model-fields{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px;background:#faf6f1;border:1px solid var(--line);border-radius:17px}.subsection-title{font-weight:900}.dialog-actions{display:flex;gap:8px;align-items:center;margin-top:18px}.password-copy{font-size:.86rem;line-height:1.45}
 .toast{position:fixed;left:50%;bottom:95px;transform:translate(-50%,20px);background:#2f2a26;color:white;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:560px){.form-grid,.model-fields{grid-template-columns:1fr}.item-top{grid-template-columns:60px 1fr}.thumb{width:60px;height:60px}.price-box{grid-column:auto;text-align:right}}
+
+
+/* Sélecteur d'emoji personne */
+.emoji-picker{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:2px;
+}
+.emoji-choice{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:1.35rem;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+.emoji-choice.selected{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(141,79,36,.12);
+  background:var(--accent-soft);
+}
