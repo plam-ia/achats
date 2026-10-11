@@ -1,37 +1,26 @@
-# Achats — version épurée
+# Achats — évolution V5
 
 Modifications :
-- nouvel icône root :
-  - apple-touch-icon.png
-  - icon-192.png
-  - icon-512.png
-- réduction de l'espace entre le titre et la zone de recherche
-- dans les cartes de liste :
-  - suppression de la ligne modèle
-  - suppression de la ligne catégorie / marchand
-- ces infos restent accessibles quand tu cliques sur l'item (dialogue détail/édition)
-- cache du service worker renouvelé
+- suppression de l'état "Acheté" dans l'application
+- les éventuels anciens items "purchased" sont ignorés
+- dans Achats, les items de catégorie Cadeaux ont un badge "🎁 Cadeau"
+- dans Cadeaux :
+  - avatar avec emoji iPhone
+  - possibilité de modifier une personne
+  - possibilité de supprimer une personne
+- retour à une icône plus proche de la première version, avec fond bleu clair
+- cartes légèrement réduites en hauteur, sans devenir trop compactes
 
-## Important
-Le ZIP ne contient pas `config.js`.
-Garde ton `config.js` actuel dans le dépôt.
+Important :
+- le ZIP ne contient pas `config.js`
+- garde ton `config.js` actuel sur GitHub
 
-## Fichiers à uploader sur la branche main
+Fichiers à uploader sur `main` :
 - index.html
 - styles.css
 - app.js
 - manifest.json
 - sw.js
-
-## Après upload
-1. Commit sur `main`
-2. Ouvre l'URL GitHub Pages dans Safari
-3. Recharge 2 fois
-4. Ferme complètement la PWA
-5. Rouvre-la
-
-Si l'ancienne icône reste :
-- supprime le raccourci de l'écran d'accueil
-- ouvre Safari
-- recharge le site
-- Partager > Sur l'écran d'accueil
+- apple-touch-icon.png
+- icon-192.png
+- icon-512.png
