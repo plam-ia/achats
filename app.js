@@ -11,6 +11,7 @@ let people = [];
 let buyStatusFilter = "";
 let buyPriorityFilter = "";
 let buyCategoryFilter = "";
+let buyTagFilter = "";
 let giftPersonFilter = "";
 
 const recoveryHint =
@@ -68,6 +69,21 @@ function personEmoji(name = "") {
   return PERSON_EMOJIS[sum % PERSON_EMOJIS.length];
 }
 
+function normalizeTags(value = "") {
+  const source = Array.isArray(value) ? value : String(value).split(",");
+  const seen = new Set();
+
+  return source
+    .map((tag) => String(tag).trim())
+    .filter(Boolean)
+    .filter((tag) => {
+      const key = tag.toLocaleLowerCase("fr");
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
 function sortByUrgency(list) {
   return [...list].sort((a, b) => {
     const p = (PRIORITY_RANK[b.priority] || 0) - (PRIORITY_RANK[a.priority] || 0);
@@ -87,6 +103,14 @@ function itemCard(it) {
     ? `<a class="product-link" href="${esc(it.product_url)}" target="_blank" rel="noopener noreferrer">Voir le produit ↗</a>`
     : "";
   const giftBadge = it.category === "Cadeaux" ? `<span class="badge gift">🎁 Cadeau</span>` : "";
+  const itemTags = normalizeTags(it.tags || []);
+  const visibleTags = itemTags
+    .slice(0, 2)
+    .map((tag) => `<span class="badge tag">#${esc(tag)}</span>`)
+    .join("");
+  const extraTags = itemTags.length > 2
+    ? `<span class="badge tag-more">+${itemTags.length - 2}</span>`
+    : "";
 
   return `
     <article class="item-card" data-id="${it.id}">
@@ -98,6 +122,7 @@ function itemCard(it) {
             ${giftBadge}
             <span class="badge">${esc(statusLabel(it.status))}</span>
             <span class="badge ${esc(it.priority)}">${esc(priorityLabel(it.priority))}</span>
+            ${visibleTags}${extraTags}
           </div>
         </div>
         <div class="price-box">${price}${target}</div>
@@ -175,6 +200,7 @@ async function reloadAll() {
 
 function renderAll() {
   renderCategoryChips();
+  renderTagChips();
   renderBuy();
   renderPeople();
   renderGifts();
@@ -195,6 +221,36 @@ function renderCategoryChips() {
   });
 }
 
+function renderTagChips() {
+  const wrap = $("buyTagChips");
+  const block = $("tagFilterBlock");
+  if (!wrap) return;
+
+  const tags = [...new Set(
+    items.flatMap((item) => normalizeTags(item.tags || []))
+  )].sort((a, b) => a.localeCompare(b, "fr", { sensitivity: "base" }));
+
+  if (block) block.classList.toggle("hidden", tags.length === 0);
+
+  if (buyTagFilter && !tags.includes(buyTagFilter)) {
+    buyTagFilter = "";
+  }
+
+  wrap.innerHTML =
+    `<button class="chip ${buyTagFilter === "" ? "active" : ""}" data-tag="">Tous</button>` +
+    tags.map((tag) =>
+      `<button class="chip tag-filter-chip ${buyTagFilter === tag ? "active" : ""}" data-tag="${esc(tag)}">#${esc(tag)}</button>`
+    ).join("");
+
+  wrap.querySelectorAll("[data-tag]").forEach((chip) => {
+    chip.onclick = () => {
+      buyTagFilter = chip.dataset.tag;
+      renderTagChips();
+      renderBuy();
+    };
+  });
+}
+
 function renderBuy() {
   const q = $("buySearch").value.trim().toLowerCase();
   let list = [...items];
@@ -202,10 +258,21 @@ function renderBuy() {
   if (buyStatusFilter) list = list.filter((i) => i.status === buyStatusFilter);
   if (buyPriorityFilter) list = list.filter((i) => i.priority === buyPriorityFilter);
   if (buyCategoryFilter) list = list.filter((i) => i.category === buyCategoryFilter);
+  if (buyTagFilter) {
+    list = list.filter((i) =>
+      normalizeTags(i.tags || []).some((tag) => tag === buyTagFilter)
+    );
+  }
 
   if (q) {
-    list = list.filter((i) => [i.title, i.model_name, i.category, i.notes, i.merchant]
-      .some((v) => String(v || "").toLowerCase().includes(q)));
+    list = list.filter((i) => [
+      i.title,
+      i.model_name,
+      i.category,
+      i.notes,
+      i.merchant,
+      normalizeTags(i.tags || []).join(" ")
+    ].some((v) => String(v || "").toLowerCase().includes(q)));
   }
 
   list = sortByUrgency(list);
@@ -303,6 +370,7 @@ function openItem(id) {
   $("itemStatus").value = it.status || "idea";
   $("itemPriority").value = it.priority || "medium";
   $("itemNotes").value = it.notes || "";
+  $("itemTags").value = normalizeTags(it.tags || []).join(", ");
   $("itemPreviewImage").value = it.preview_image_url || "";
   $("itemModelName").value = it.model_name || "";
   $("itemProductUrl").value = it.product_url || "";
@@ -359,6 +427,7 @@ async function saveItem(e) {
     status,
     priority: $("itemPriority").value,
     notes: $("itemNotes").value.trim() || null,
+    tags: normalizeTags($("itemTags").value),
     preview_image_url: $("itemPreviewImage").value.trim() || null,
     model_name: status !== "idea" ? ($("itemModelName").value.trim() || null) : null,
     product_url: status !== "idea" ? ($("itemProductUrl").value.trim() || null) : null,
@@ -545,7 +614,7 @@ document.querySelectorAll(".emoji-choice").forEach((b) => {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js?v=6").catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=7").catch(() => {});
   });
 }
 

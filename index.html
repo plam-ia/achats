@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json?v=6">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=6">
   <link rel="apple-touch-icon-precomposed" href="./apple-touch-icon.png?v=6">
-  <link rel="stylesheet" href="./styles.css?v=6">
+  <link rel="stylesheet" href="./styles.css?v=7">
 </head>
 <body>
   <div id="toast" class="toast"></div>
@@ -66,6 +66,11 @@
         <div class="filter-block">
           <div class="filter-label">Catégorie</div>
           <div class="segmented" id="buyCategoryChips"></div>
+        </div>
+
+        <div class="filter-block" id="tagFilterBlock">
+          <div class="filter-label">Tags</div>
+          <div class="segmented" id="buyTagChips"></div>
         </div>
       </div>
       <div id="buyItems" class="cards"></div>
@@ -123,6 +128,12 @@
           </select>
         </label>
         <label id="personField">Pour qui ?<select id="itemPerson"></select></label>
+
+        <label class="full">Tags
+          <input id="itemTags" type="text" placeholder="Ex. Black Friday, Noël">
+          <span class="field-hint">Sépare plusieurs tags par des virgules.</span>
+        </label>
+
         <label class="full">Image / aperçu
           <input id="itemPreviewImage" type="url" placeholder="https://…/image.jpg">
           <span class="field-hint">Disponible dès le stade Idée.</span>
@@ -201,6 +212,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=6"></script>
+  <script src="./app.js?v=7"></script>
 </body>
 </html>

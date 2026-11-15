@@ -58,3 +58,19 @@ input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;bo
   box-shadow:0 0 0 3px rgba(141,79,36,.12);
   background:var(--accent-soft);
 }
+
+
+/* Tags achats */
+.badge.tag{
+  background:#eef3f8;
+  color:#526b80;
+}
+.badge.tag-more{
+  background:#f1eee9;
+  color:#746b64;
+}
+.tag-filter-chip.active{
+  background:#526f86;
+  border-color:#526f86;
+  color:#fff;
+}
